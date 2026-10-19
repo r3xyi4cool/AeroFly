@@ -3,6 +3,7 @@
 **AeroFly** is a lightweight, high-performance flight management plugin built specifically for **Paper 1.21.11** using **Java 21**. It features daily reset allowances based on LuckPerms permissions, permanent purchased flight time, temporary unlimited flight grants, offline player support, and SQLite persistence.
 
 ---
+*Developed with assistance from Gemini Flash 3.8.*
 
 ## Requirements
 
