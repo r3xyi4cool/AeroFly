@@ -1,0 +1,48 @@
+# Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# Other IDEs
+.vscode/
+.classpath
+.project
+.settings/
+*.swp
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs and crash files
+*.log
+hs_err_pid*
+
+# Local test server and runtime data
+run/
+server/
+test-server/
+plugins/
+
+# Databases and local data
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+
+# Secrets and local config
+.env
+local.properties
+*.key
+
+# Built jars
+*.jar
+!gradle/wrapper/gradle-wrapper.jar

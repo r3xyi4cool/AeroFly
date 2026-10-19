@@ -1,0 +1,110 @@
+# ==============================================================================
+#                               AeroFly Configuration
+# ==============================================================================
+
+# Timezone used for daily reset calculations (e.g. Asia/Kolkata, America/New_York, UTC)
+timezone: "Asia/Kolkata"
+
+# The time of day when daily allowances reset (24-hour format HH:mm)
+daily-reset-time: "00:00"
+
+# Ranks configuration:
+# Each rank requires:
+#   - permission: The LuckPerms permission node
+#   - daily-time: Daily flight allowance (e.g., 30m, 1h, 2h30m)
+#   - priority: Higher priority wins when a player has multiple rank permissions.
+# Allowances are NEVER added together; the highest priority configured rank is used.
+ranks:
+  default:
+    permission: "aerofly.rank.default"
+    daily-time: "1h"
+    priority: 1
+  vip:
+    permission: "aerofly.rank.vip"
+    daily-time: "2h"
+    priority: 2
+  # mvp:
+  #   permission: "aerofly.rank.mvp"
+  #   daily-time: "3h"
+  #   priority: 3
+
+# Fallback rank information for players who do not have any configured rank permission
+fallback-rank:
+  name: "None"
+  daily-time: "0s"
+
+# Database storage settings
+database:
+  # SQLite database filename inside plugins/AeroFly/
+  filename: "aerofly.db"
+  # Periodic database autosave interval in seconds (e.g., 300 = every 5 minutes)
+  autosave-interval-seconds: 300
+
+# Flight charging options
+flight:
+  # If true, flight time is consumed only when the player is airborne in Survival/Adventure mode.
+  # If false, flight time is consumed whenever /fly is enabled (allowFlight is true).
+  # Creative and Spectator modes never consume flight time.
+  charge-only-when-airborne: true
+
+# Warning thresholds: one-time notification per session when remaining time reaches or falls below these durations
+warning-thresholds:
+  - "5m"
+  - "1m"
+  - "30s"
+
+# Excluded worlds: flight is automatically disabled and cannot be activated in these worlds
+excluded-worlds:
+  - "example_world_nether"
+  - "example_world_the_end"
+
+# PlaceholderAPI support
+placeholderapi:
+  enabled: true
+
+# Text returned by PlaceholderAPI placeholders when a player has unlimited flight active
+unlimited-text: "Unlimited"
+
+# ==============================================================================
+#                                Messages
+# All messages support Paper's Adventure MiniMessage format (gradients, colors, tags).
+# Legacy ChatColor (&a, &c) is deprecated in favor of MiniMessage tags (<green>, <red>, etc.).
+# ==============================================================================
+messages:
+  prefix: "<gradient:#00c6ff:#0072ff>[AeroFly]</gradient> "
+  flight-enabled: "<green>Flight mode has been <bold>enabled</bold>.</green>"
+  flight-disabled: "<red>Flight mode has been <bold>disabled</bold>.</red>"
+  flight-expired: "<red><bold>Flight expired!</bold> You have run out of flight time.</red>"
+  flight-no-time: "<red>You do not have any flight time left!</red>"
+  flight-excluded-world: "<red>Flight is disabled in this world (<yellow><world></yellow>).</red>"
+  flight-warning: "<yellow>Warning: You have <gold><time></gold> of flight time remaining!</yellow>"
+  daily-reset-notice: "<aqua>Your daily flight allowance has been reset!</aqua>"
+  no-permission: "<red>You do not have permission to execute this command.</red>"
+  player-only: "<red>This command can only be executed by a player in-game.</red>"
+  player-not-found: "<red>Player '<yellow><player></yellow>' was not found. They must have joined the server at least once.</red>"
+  invalid-duration: "<red>Invalid duration '<yellow><input></yellow>'. Examples: 30s, 15m, 2h, 1d, 2h30m.</red>"
+  duration-overflow: "<red>Duration is too large! Maximum limit is 10 years.</red>"
+  reload-success: "<green>Configuration and rank settings successfully reloaded!</green>"
+  add-success: "<green>Added <gold><amount></gold> of purchased flight time to <white><player></white>. New balance: <gold><balance></gold>.</green>"
+  remove-success: "<green>Removed <gold><amount></gold> of purchased flight time from <white><player></white>. New balance: <gold><balance></gold>.</green>"
+  set-success: "<green>Set purchased flight time for <white><player></white> to <gold><balance></gold>.</green>"
+  infinite-all-success: "<green>Granted <gold><duration></gold> of unlimited flight to <yellow>ALL</yellow> players. (Grant ID: <aqua>#<id></aqua>)</green>"
+  infinite-player-success: "<green>Granted <gold><duration></gold> of unlimited flight to player <white><player></white>. (Grant ID: <aqua>#<id></aqua>)</green>"
+  infinite-group-success: "<green>Granted <gold><duration></gold> of unlimited flight to group <white><group></white>. (Grant ID: <aqua>#<id></aqua>)</green>"
+  revoke-success: "<green>Successfully revoked grant <aqua>#<id></aqua>.</green>"
+  revoke-not-found: "<red>No active grant found with ID <aqua>#<id></aqua>.</red>"
+  grants-header: "<gradient:#00c6ff:#0072ff><bold>======= Active Unlimited Grants =======</bold></gradient>"
+  grants-entry: "<gray>#<aqua><id></aqua> [<yellow><type></yellow>: <white><target></white>] Expires in: <gold><expiry></gold> (By: <white><creator></white>)</gray>"
+  grants-none: "<gray>There are currently no active unlimited grants.</gray>"
+  check-header: "<gradient:#00c6ff:#0072ff><bold>======= AeroFly Player Check =======</bold></gradient>"
+  check-player: "<gray>Player: <white><player></white> (<gray><uuid></gray>)</gray>"
+  check-rank: "<gray>Rank: <aqua><rank></aqua></gray>"
+  check-daily-allowance: "<gray>Daily Allowance: <green><allowance></green></gray>"
+  check-daily-used: "<gray>Daily Used: <yellow><used></yellow></gray>"
+  check-daily-remaining: "<gray>Daily Remaining: <green><remaining></green></gray>"
+  check-purchased: "<gray>Purchased Balance: <gold><purchased></gold></gray>"
+  check-total-finite: "<gray>Total Finite Time: <green><total></green></gray>"
+  check-unlimited-active: "<gray>Unlimited Active: <green><status></green></gray>"
+  check-grants-header: "<gray>Applicable Grants (Latest Expiry First):</gray>"
+  check-grant-item: "<gray>  - <yellow>[<type>]</yellow> <white><source></white> | Expires in: <gold><expiry></gold></gray>"
+  check-footer: "<gradient:#00c6ff:#0072ff><bold>====================================</bold></gradient>"

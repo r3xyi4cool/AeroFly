@@ -1,0 +1,74 @@
+name: AeroFly
+version: '${version}'
+main: org.rexyiscool.aeroFly.AeroFly
+api-version: '1.21'
+load: POSTWORLD
+depend: [LuckPerms]
+softdepend: [PlaceholderAPI]
+
+commands:
+  fly:
+    description: Toggle your flight mode
+    usage: /fly
+    permission: aerofly.use
+  aerofly:
+    description: AeroFly management command
+    usage: /aerofly help
+    aliases: [af]
+
+permissions:
+  aerofly.use:
+    description: Allows using the /fly command to toggle flight
+    default: true
+
+  aerofly.bypass.time:
+    description: Grants permanent unlimited flight time without consuming balances
+    default: false
+
+  aerofly.rank.default:
+    description: Default rank daily flight allowance
+    default: false
+
+  aerofly.rank.vip:
+    description: VIP rank daily flight allowance
+    default: false
+
+  aerofly.admin:
+    description: Full administrative access to AeroFly
+    default: op
+    children:
+      aerofly.admin.add: true
+      aerofly.admin.remove: true
+      aerofly.admin.set: true
+      aerofly.admin.check: true
+      aerofly.admin.reload: true
+      aerofly.admin.infinite: true
+      aerofly.admin.revoke: true
+
+  aerofly.admin.add:
+    description: Add flight time to a player's purchased balance
+    default: false
+
+  aerofly.admin.remove:
+    description: Deduct flight time from a player's purchased balance
+    default: false
+
+  aerofly.admin.set:
+    description: Set a player's purchased flight balance
+    default: false
+
+  aerofly.admin.check:
+    description: Inspect a player's flight allowances, balances, and active grants
+    default: false
+
+  aerofly.admin.reload:
+    description: Reload the AeroFly configuration
+    default: false
+
+  aerofly.admin.infinite:
+    description: Grant temporary unlimited flight to players, groups, or globally, and view grants
+    default: false
+
+  aerofly.admin.revoke:
+    description: Revoke an active temporary unlimited grant
+    default: false
