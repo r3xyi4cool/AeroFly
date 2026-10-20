@@ -5,6 +5,7 @@ AeroFly is an EssentialsX addon. Players use /fly (from EssentialsX). AeroFly li
 **AeroFly** seamlessly layers a fair, real-time flight time-limit system onto EssentialsX. It features daily reset allowances based on LuckPerms permissions, permanent purchased flight time, temporary unlimited flight grants, offline player support, and SQLite persistence.
 
 ---
+*Developed with assistance from Gemini Flash 3.8.*
 
 ## Requirements
 
