@@ -1,33 +1,26 @@
 name: AeroFly
 version: '${version}'
 main: org.rexyiscool.aeroFly.AeroFly
+authors: [rexyiscool]
 api-version: '1.21'
 load: POSTWORLD
-depend: [LuckPerms]
+depend: [LuckPerms, Essentials]
 softdepend: [PlaceholderAPI]
 
 commands:
-  fly:
-    description: Toggle your flight mode
-    usage: /fly
-    permission: aerofly.use
   aerofly:
     description: AeroFly management command
     usage: /aerofly help
     aliases: [af]
 
 permissions:
-  aerofly.use:
-    description: Allows using the /fly command to toggle flight
-    default: true
-
   aerofly.bypass.time:
     description: Grants permanent unlimited flight time without consuming balances
     default: false
 
   aerofly.rank.default:
     description: Default rank daily flight allowance
-    default: false
+    default: true
 
   aerofly.rank.vip:
     description: VIP rank daily flight allowance
@@ -44,6 +37,7 @@ permissions:
       aerofly.admin.reload: true
       aerofly.admin.infinite: true
       aerofly.admin.revoke: true
+      aerofly.bypass.time: true
 
   aerofly.admin.add:
     description: Add flight time to a player's purchased balance

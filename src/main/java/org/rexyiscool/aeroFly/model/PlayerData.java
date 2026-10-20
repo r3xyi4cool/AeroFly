@@ -1,6 +1,5 @@
-package org.rexyiscool.aeroFly;
+package org.rexyiscool.aeroFly.model;
 
-import java.util.Collections;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -23,9 +22,9 @@ public final class PlayerData {
     public PlayerData(UUID uuid, String lastName, long dailyUsedSeconds, long lastResetPeriod, long purchasedSeconds, long updatedAt) {
         this.uuid = Objects.requireNonNull(uuid, "UUID cannot be null");
         this.lastName = lastName != null ? lastName : "Unknown";
-        this.dailyUsedSeconds = Math.max(0, dailyUsedSeconds);
+        this.dailyUsedSeconds = Math.max(0L, dailyUsedSeconds);
         this.lastResetPeriod = lastResetPeriod;
-        this.purchasedSeconds = Math.max(0, purchasedSeconds);
+        this.purchasedSeconds = Math.max(0L, purchasedSeconds);
         this.updatedAt = updatedAt > 0 ? updatedAt : System.currentTimeMillis();
         this.lastChargeTimestamp = System.currentTimeMillis();
     }
@@ -50,7 +49,7 @@ public final class PlayerData {
     }
 
     public synchronized void setDailyUsedSeconds(long dailyUsedSeconds) {
-        this.dailyUsedSeconds = Math.max(0, dailyUsedSeconds);
+        this.dailyUsedSeconds = Math.max(0L, dailyUsedSeconds);
         this.dirty = true;
     }
 
@@ -104,8 +103,7 @@ public final class PlayerData {
     }
 
     public synchronized long getDailyRemaining(long dailyAllowance) {
-        long rem = dailyAllowance - dailyUsedSeconds;
-        return Math.max(0L, rem);
+        return Math.max(0L, dailyAllowance - dailyUsedSeconds);
     }
 
     public synchronized long getTotalRemaining(long dailyAllowance) {
@@ -113,11 +111,7 @@ public final class PlayerData {
     }
 
     /**
-     * Drains time in seconds: daily time first, then purchased time.
-     *
-     * @param secondsToDrain number of elapsed seconds to charge
-     * @param dailyAllowance the player's daily allowance in seconds
-     * @return remaining total finite seconds
+     * Drains time in seconds: daily allowance first, then purchased balance.
      */
     public synchronized long drainTime(long secondsToDrain, long dailyAllowance) {
         if (secondsToDrain <= 0) {
@@ -133,15 +127,12 @@ public final class PlayerData {
             this.purchasedSeconds = Math.max(0L, this.purchasedSeconds - remainingDrain);
         }
 
-        this.updatedAt = System.currentTimeMillis();
-        this.dirty = true;
+        markUpdated();
         return getTotalRemaining(dailyAllowance);
     }
 
     public synchronized long addPurchased(long amount, long maxCap) {
-        if (amount <= 0) {
-            return this.purchasedSeconds;
-        }
+        if (amount <= 0) return this.purchasedSeconds;
 
         try {
             long added = Math.addExact(this.purchasedSeconds, amount);
@@ -150,30 +141,29 @@ public final class PlayerData {
             this.purchasedSeconds = maxCap;
         }
 
-        this.updatedAt = System.currentTimeMillis();
-        this.dirty = true;
-        // Allow warnings to fire again if balance increased above thresholds
+        markUpdated();
         recheckThresholds(this.purchasedSeconds);
         return this.purchasedSeconds;
     }
 
     public synchronized long removePurchased(long amount) {
-        if (amount <= 0) {
-            return this.purchasedSeconds;
-        }
+        if (amount <= 0) return this.purchasedSeconds;
 
         this.purchasedSeconds = Math.max(0L, this.purchasedSeconds - amount);
-        this.updatedAt = System.currentTimeMillis();
-        this.dirty = true;
+        markUpdated();
         return this.purchasedSeconds;
     }
 
     public synchronized long setPurchased(long amount) {
         this.purchasedSeconds = Math.max(0L, amount);
-        this.updatedAt = System.currentTimeMillis();
-        this.dirty = true;
+        markUpdated();
         recheckThresholds(this.purchasedSeconds);
         return this.purchasedSeconds;
+    }
+
+    private void markUpdated() {
+        this.updatedAt = System.currentTimeMillis();
+        this.dirty = true;
     }
 
     private void recheckThresholds(long totalBalance) {

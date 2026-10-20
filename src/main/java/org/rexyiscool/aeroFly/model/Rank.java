@@ -1,4 +1,4 @@
-package org.rexyiscool.aeroFly;
+package org.rexyiscool.aeroFly.model;
 
 import java.util.Objects;
 
@@ -34,17 +34,7 @@ public final class Rank implements Comparable<Rank> {
 
     @Override
     public int compareTo(Rank other) {
-        // Higher priority first
+        // Highest priority first
         return Integer.compare(other.priority, this.priority);
-    }
-
-    @Override
-    public String toString() {
-        return "Rank{" +
-                "name='" + name + '\'' +
-                ", permission='" + permission + '\'' +
-                ", dailyTimeSeconds=" + dailyTimeSeconds +
-                ", priority=" + priority +
-                '}';
     }
 }

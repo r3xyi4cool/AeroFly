@@ -1,15 +1,19 @@
-package org.rexyiscool.aeroFly;
+package org.rexyiscool.aeroFly.hook;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.rexyiscool.aeroFly.AeroFly;
+import org.rexyiscool.aeroFly.flight.FlightManager;
+import org.rexyiscool.aeroFly.model.PlayerData;
+import org.rexyiscool.aeroFly.model.Rank;
+import org.rexyiscool.aeroFly.util.DurationParser;
 
 import java.time.Duration;
 import java.util.List;
 import java.util.Objects;
-
 
 public final class AeroFlyExpansion extends PlaceholderExpansion {
 
@@ -61,7 +65,6 @@ public final class AeroFlyExpansion extends PlaceholderExpansion {
         Player onlinePlayer = offlinePlayer.getPlayer();
         PlayerData data = flightManager.getPlayerData(offlinePlayer.getUniqueId());
 
-        // Placeholders must read strictly from the in-memory cache without blocking on SQLite
         Rank rank = onlinePlayer != null ? flightManager.evaluatePlayerRank(onlinePlayer) : flightManager.getFallbackRank();
         long dailyAllowance = rank.getDailyTimeSeconds();
         long dailyRemaining = data != null ? data.getDailyRemaining(dailyAllowance) : 0L;
@@ -69,48 +72,18 @@ public final class AeroFlyExpansion extends PlaceholderExpansion {
         long totalFinite = dailyRemaining + purchasedSeconds;
         boolean hasUnlimited = (onlinePlayer != null) && flightManager.hasUnlimitedFlight(onlinePlayer);
 
-        switch (params.toLowerCase()) {
-            case "daily_remaining":
-                return DurationParser.format(dailyRemaining);
-
-            case "daily_remaining_seconds":
-                return String.valueOf(dailyRemaining);
-
-            case "daily_allowance":
-                return DurationParser.format(dailyAllowance);
-
-            case "purchased_time":
-                return DurationParser.format(purchasedSeconds);
-
-            case "purchased_seconds":
-                return String.valueOf(purchasedSeconds);
-
-            case "total_available":
-                if (hasUnlimited) {
-                    return flightManager.getUnlimitedText();
-                }
-                return DurationParser.format(totalFinite);
-
-            case "total_available_seconds":
-                if (hasUnlimited) {
-                    return "-1";
-                }
-                return String.valueOf(totalFinite);
-
-            case "is_flying":
-                if (onlinePlayer != null) {
-                    return String.valueOf(flightManager.isFlightActive(onlinePlayer) && onlinePlayer.getAllowFlight());
-                }
-                return "false";
-
-            case "has_unlimited":
-                return String.valueOf(hasUnlimited);
-
-            case "rank":
-                return rank.getName();
-
-            default:
-                return null;
-        }
+        return switch (params.toLowerCase()) {
+            case "daily_remaining" -> DurationParser.format(dailyRemaining);
+            case "daily_remaining_seconds" -> String.valueOf(dailyRemaining);
+            case "daily_allowance" -> DurationParser.format(dailyAllowance);
+            case "purchased_time" -> DurationParser.format(purchasedSeconds);
+            case "purchased_seconds" -> String.valueOf(purchasedSeconds);
+            case "total_available" -> hasUnlimited ? flightManager.getUnlimitedText() : DurationParser.format(totalFinite);
+            case "total_available_seconds" -> hasUnlimited ? "-1" : String.valueOf(totalFinite);
+            case "is_flying" -> String.valueOf(onlinePlayer != null && flightManager.isFlightActive(onlinePlayer) && onlinePlayer.getAllowFlight());
+            case "has_unlimited" -> String.valueOf(hasUnlimited);
+            case "rank" -> rank.getName();
+            default -> null;
+        };
     }
 }

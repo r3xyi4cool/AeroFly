@@ -1,4 +1,4 @@
-package org.rexyiscool.aeroFly;
+package org.rexyiscool.aeroFly.model;
 
 import java.util.Objects;
 import java.util.Set;
@@ -88,9 +88,6 @@ public final class Grant {
     }
 
     public String getTargetDisplay() {
-        if (type == GrantType.ALL) {
-            return "ALL";
-        }
-        return target != null ? target : "None";
+        return (type == GrantType.ALL) ? "ALL" : (target != null ? target : "None");
     }
 }

@@ -2,6 +2,9 @@
 #                               AeroFly Configuration
 # ==============================================================================
 
+# Whether to display the startup banner in the console on plugin enable
+startup-banner: true
+
 # Timezone used for daily reset calculations (e.g. Asia/Kolkata, America/New_York, UTC)
 timezone: "Asia/Kolkata"
 
@@ -43,9 +46,11 @@ database:
 # Flight charging options
 flight:
   # If true, flight time is consumed only when the player is airborne in Survival/Adventure mode.
-  # If false, flight time is consumed whenever /fly is enabled (allowFlight is true).
+  # If false, flight time is consumed whenever flight is active.
   # Creative and Spectator modes never consume flight time.
   charge-only-when-airborne: true
+  # If true, grants one-time fall damage immunity when flight expires in mid-air
+  safe-fall-on-expire: true
 
 # Warning thresholds: one-time notification per session when remaining time reaches or falls below these durations
 warning-thresholds:
@@ -74,6 +79,11 @@ messages:
   prefix: "<gradient:#00c6ff:#0072ff>[AeroFly]</gradient> "
   flight-enabled: "<green>Flight mode has been <bold>enabled</bold>.</green>"
   flight-disabled: "<red>Flight mode has been <bold>disabled</bold>.</red>"
+  flight-enabled-other: "<green>Flight mode has been <bold>enabled</bold> for <white><player></white>.</green>"
+  flight-disabled-other: "<red>Flight mode has been <bold>disabled</bold> for <white><player></white>.</red>"
+  flight-enabled-by: "<green>Flight mode has been <bold>enabled</bold> by <white><sender></white>.</green>"
+  flight-disabled-by: "<red>Flight mode has been <bold>disabled</bold> by <white><sender></white>.</red>"
+  fly-usage: "<yellow>Usage: /fly [player] [on|off]</yellow>"
   flight-expired: "<red><bold>Flight expired!</bold> You have run out of flight time.</red>"
   flight-no-time: "<red>You do not have any flight time left!</red>"
   flight-excluded-world: "<red>Flight is disabled in this world (<yellow><world></yellow>).</red>"

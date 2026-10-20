@@ -1,6 +1,8 @@
 # AeroFly
 
-**AeroFly** is a lightweight, high-performance flight management plugin built specifically for **Paper 1.21.11** using **Java 21**. It features daily reset allowances based on LuckPerms permissions, permanent purchased flight time, temporary unlimited flight grants, offline player support, and SQLite persistence.
+AeroFly is an EssentialsX addon. Players use /fly (from EssentialsX). AeroFly limits flight time. Players need essentials.fly.
+
+**AeroFly** seamlessly layers a fair, real-time flight time-limit system onto EssentialsX. It features daily reset allowances based on LuckPerms permissions, permanent purchased flight time, temporary unlimited flight grants, offline player support, and SQLite persistence.
 
 ---
 
@@ -8,6 +10,7 @@
 
 - **Server Software:** Paper 1.21.11 (or compatible forks)
 - **Java Runtime:** Java 21+
+- **EssentialsX:** 2.21+ (required host plugin owning `/fly`)
 - **LuckPerms:** 5.4+ (required dependency for ranks and permission handling)
 - **PlaceholderAPI:** 2.11.6+ (optional soft-dependency for placeholders)
 
@@ -16,33 +19,24 @@
 ## Installation
 
 1. Stop your Minecraft server.
-2. Ensure you have installed **LuckPerms** (and optionally **PlaceholderAPI**) into your server's `plugins/` directory.
+2. Ensure you have installed **EssentialsX**, **LuckPerms** (and optionally **PlaceholderAPI**) into your server's `plugins/` directory.
 3. Place `AeroFly-1.0-SNAPSHOT.jar` (or shaded release jar) into your server's `plugins/` directory.
-4. Start the server. The plugin will automatically generate its configuration file at `plugins/AeroFly/config.yml` and SQLite database at `plugins/AeroFly/aerofly.db`.
-
----
-
-## Features
-
-- **Daily Flight Allowances:** Define flexible ranks in `config.yml` mapped to LuckPerms permission nodes. The plugin automatically grants the highest-priority rank daily allowance without stacking allowances.
-- **Accurate Real-Time Charging:** Charges flight time based on real timestamp differences, ensuring no double-charging or time lost during restarts, kicks, or lag spikes.
-- **Fair Consumption Rules:** Only charges when the player is in Survival or Adventure mode and actively using flight. Creative and Spectator modes are never charged.
-- **Timezone-Aware Daily Resets:** Daily allowances reset at a designated time (default `00:00`) in any configured timezone (default `Asia/Kolkata`). Resets use monotonic period indexing so offline servers handle resets seamlessly when brought back online.
-- **Purchased Flight Time:** Permanent flight time that stacks and persists across daily resets. Can be awarded through shop plugins, crates, or webstores.
-- **Temporary Unlimited Grants:** Award unlimited flight to individual players, LuckPerms groups, or globally (`ALL`). Grants persist in SQLite, expire automatically, and can be viewed or revoked at any time.
-- **Offline Player Support:** Admin commands work seamlessly on offline players via LuckPerms UUID lookup and cached offline data without blocking the main server thread.
-- **Modern Adventure MiniMessage:** Fully customizable messages supporting colors, gradients, and hover text without legacy formatting codes.
-- **Lightweight SQLite Storage:** Uses a dedicated background thread with Write-Ahead Logging (WAL) and synchronous flushes on server shutdown.
+4. Start the server. The plugin will automatically hook into EssentialsX and LuckPerms, generating its configuration file at `plugins/AeroFly/config.yml` and SQLite database at `plugins/AeroFly/aerofly.db`.
 
 ---
 
 ## Commands & Permissions
 
-### Player Commands
+### Flight Command (EssentialsX)
+
+Players toggle flight mode using EssentialsX's `/fly` command. AeroFly enforces time balances in the background.
 
 | Command | Permission | Description |
 | :--- | :--- | :--- |
-| `/fly` | `aerofly.use` (default: `true`) | Toggles flight mode on or off. |
+| `/fly` | `essentials.fly` | Toggles flight mode (provided by EssentialsX, time-managed by AeroFly). |
+| `/fly [on\|off]` | `essentials.fly` | Explicitly enables or disables flight mode. |
+| `/fly <player>` | `essentials.fly.others` | Toggles flight mode for another player. |
+| `/fly <player> [on\|off]` | `essentials.fly.others` | Explicitly sets flight mode for another player. |
 
 ### Admin Commands
 
